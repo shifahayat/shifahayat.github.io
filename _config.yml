@@ -2,7 +2,7 @@ site: Portfolio
 
 
 url: https://shifahayat.github.io/
-baseurl: https://shifahayat.github.io/
+baseurl: 
 
 collections:
   pages:
