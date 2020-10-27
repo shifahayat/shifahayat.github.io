@@ -868,6 +868,6 @@ abstract.onAdd = function (map) {
   abstract.show = function () {
       this._div.classList.remove("abstract");
       this._div.classList.add("abstractUncollapsed");
-      this._div.innerHTML = 'Based on classification scheme used by Hayat and Fast (2018): <br> <img src="/images/classification.PNG" style="display:inline;" />';
+      this._div.innerHTML = 'Based on classification scheme used by Hayat and Fast (2018): <br> <img src="/images/classification.PNG" />';
 };
 abstract.addTo(map);
