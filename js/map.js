@@ -522,7 +522,7 @@ function style_SidewalksFullyAccessible_8_0() {
   return {
       pane: 'pane_SidewalksFullyAccessible_8',
       opacity: 1,
-      color: 'rgba(36,102,168,1.0)',
+      color: 'rgba(190,207,80,1.0)',
       dashArray: '',
       lineCap: 'square',
       lineJoin: 'bevel',
