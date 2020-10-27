@@ -1,8 +1,7 @@
 site: Portfolio
 
-
 url: https://shifahayat.github.io/
-baseurl: 
+baseurl:
 
 collections:
   pages:

@@ -5,12 +5,14 @@ function highlightFeature(e) {
 
   if (e.target.feature.geometry.type === 'LineString') {
     highlightLayer.setStyle({
-      color: '#ffff00',
+      //color: '#ffff00',
+      weight: 6
     });
   } else {
     highlightLayer.setStyle({
-      fillColor: '#ffff00',
-      fillOpacity: 1
+      //fillColor: '#ffff00',
+      //fillOpacity: 1,
+      weight: 6
     });
   }
   highlightLayer.openPopup();
@@ -23,7 +25,7 @@ map.attributionControl.setPrefix('<a href="https://leafletjs.com" title="A JS li
 var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
 // load a tile layer
 map.createPane('pane_OpenStreetMapmonochrome_0');
-map.getPane('pane_OpenStreetMapmonochrome_0').style.zIndex = 400;
+map.getPane('pane_OpenStreetMapmonochrome_0').style.zIndex = 380;
   var layer_OpenStreetMapmonochrome_0 = L.tileLayer('https://a.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
     pane: 'pane_OpenStreetMapmonochrome_0',
     opacity: 1.0,
@@ -34,7 +36,20 @@ map.getPane('pane_OpenStreetMapmonochrome_0').style.zIndex = 400;
     maxNativeZoom: 18
 });
 layer_OpenStreetMapmonochrome_0;
-map.addLayer(layer_OpenStreetMapmonochrome_0);
+//map.addLayer(layer_OpenStreetMapmonochrome_0);
+map.createPane('Stamen');
+map.getPane('Stamen').style.zIndex = 380;
+  var layer_Stamen= L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png', {
+    pane: 'Stamen',
+    opacity: 1.0,
+    attribution: '',
+    minZoom: 1,
+    maxZoom: 17,
+    minNativeZoom: 0,
+    maxNativeZoom: 16
+});
+layer_Stamen;
+map.addLayer(layer_Stamen);
 var bounds_group = new L.featureGroup([]);
 //adding parkingLots
 function pop_ParkingLots_1(feature, layer) {
@@ -110,7 +125,7 @@ function style_ParkingLots_1_0(feature) {
   }
 }
 map.createPane('pane_ParkingLots_1');
-map.getPane('pane_ParkingLots_1').style.zIndex = 423;
+map.getPane('pane_ParkingLots_1').style.zIndex = 395;
 map.getPane('pane_ParkingLots_1').style['mix-blend-mode'] = 'normal';
 var layer_ParkingLots_1 = new L.geoJson(json_ParkingLots_1, {
   attribution: '',
@@ -226,7 +241,7 @@ function style_Buildings_2_0(feature) {
     }
 }
 map.createPane('pane_Buildings_2');
-map.getPane('pane_Buildings_2').style.zIndex = 422;
+map.getPane('pane_Buildings_2').style.zIndex = 394;
 map.getPane('pane_Buildings_2').style['mix-blend-mode'] = 'normal';
 var layer_Buildings_2 = new L.geoJson(json_Buildings_2, {
     attribution: '',
@@ -276,7 +291,7 @@ function style_CrosswalksInaccessible_3_0() {
   }
 }
 map.createPane('pane_CrosswalksInaccessible_3');
-map.getPane('pane_CrosswalksInaccessible_3').style.zIndex = 403;
+map.getPane('pane_CrosswalksInaccessible_3').style.zIndex = 383;
 map.getPane('pane_CrosswalksInaccessible_3').style['mix-blend-mode'] = 'normal';
 var layer_CrosswalksInaccessible_3 = new L.geoJson(json_CrosswalksInaccessible_3, {
   attribution: '',
@@ -325,7 +340,7 @@ function style_CrosswalksModAccessible_4_0() {
   }
 }
 map.createPane('pane_CrosswalksModAccessible_4');
-map.getPane('pane_CrosswalksModAccessible_4').style.zIndex = 404;
+map.getPane('pane_CrosswalksModAccessible_4').style.zIndex = 384;
 map.getPane('pane_CrosswalksModAccessible_4').style['mix-blend-mode'] = 'normal';
 var layer_CrosswalksModAccessible_4 = new L.geoJson(json_CrosswalksModAccessible_4, {
   attribution: '',
@@ -372,7 +387,7 @@ function style_CrosswalksFullyAccessible_5_0() {
   }
 }
 map.createPane('pane_CrosswalksFullyAccessible_5');
-map.getPane('pane_CrosswalksFullyAccessible_5').style.zIndex = 405;
+map.getPane('pane_CrosswalksFullyAccessible_5').style.zIndex = 385;
 map.getPane('pane_CrosswalksFullyAccessible_5').style['mix-blend-mode'] = 'normal';
 var layer_CrosswalksFullyAccessible_5 = new L.geoJson(json_CrosswalksFullyAccessible_5, {
   attribution: '',
@@ -420,7 +435,7 @@ function style_SidewalksInaccessible_6_0() {
   }
 }
 map.createPane('pane_SidewalksInaccessible_6');
-map.getPane('pane_SidewalksInaccessible_6').style.zIndex = 406;
+map.getPane('pane_SidewalksInaccessible_6').style.zIndex = 386;
 map.getPane('pane_SidewalksInaccessible_6').style['mix-blend-mode'] = 'normal';
 var layer_SidewalksInaccessible_6 = new L.geoJson(json_SidewalksInaccessible_6, {
   attribution: '',
@@ -469,7 +484,7 @@ function style_SidewalksModAccessible_7_0() {
   }
 }
 map.createPane('pane_SidewalksModAccessible_7');
-map.getPane('pane_SidewalksModAccessible_7').style.zIndex = 407;
+map.getPane('pane_SidewalksModAccessible_7').style.zIndex = 387;
 map.getPane('pane_SidewalksModAccessible_7').style['mix-blend-mode'] = 'normal';
 var layer_SidewalksModAccessible_7 = new L.geoJson(json_SidewalksModAccessible_7, {
   attribution: '',
@@ -517,7 +532,7 @@ function style_SidewalksFullyAccessible_8_0() {
   }
 }
 map.createPane('pane_SidewalksFullyAccessible_8');
-map.getPane('pane_SidewalksFullyAccessible_8').style.zIndex = 408;
+map.getPane('pane_SidewalksFullyAccessible_8').style.zIndex = 388;
 map.getPane('pane_SidewalksFullyAccessible_8').style['mix-blend-mode'] = 'normal';
 var layer_SidewalksFullyAccessible_8 = new L.geoJson(json_SidewalksFullyAccessible_8, {
   attribution: '',
@@ -569,7 +584,7 @@ function style_inaccessible_curbs_0_0() {
   }
 }
 map.createPane('pane_inaccessible_curbs_0');
-map.getPane('pane_inaccessible_curbs_0').style.zIndex = 410;
+map.getPane('pane_inaccessible_curbs_0').style.zIndex = 390;
 map.getPane('pane_inaccessible_curbs_0').style['mix-blend-mode'] = 'normal';
 var layer_inaccessible_curbs_0 = new L.geoJson(json_inaccessible_curbs_0, {
   attribution: '',
@@ -626,7 +641,7 @@ function style_accessible_curbs_1_0() {
   }
 }
 map.createPane('pane_accessible_curbs_1');
-map.getPane('pane_accessible_curbs_1').style.zIndex = 411;
+map.getPane('pane_accessible_curbs_1').style.zIndex = 391;
 map.getPane('pane_accessible_curbs_1').style['mix-blend-mode'] = 'normal';
 var layer_accessible_curbs_1 = new L.geoJson(json_accessible_curbs_1, {
   attribution: '',
@@ -683,7 +698,7 @@ function style_moderate_curbs_2_0() {
   }
 }
 map.createPane('pane_moderate_curbs_2');
-map.getPane('pane_moderate_curbs_2').style.zIndex = 412;
+map.getPane('pane_moderate_curbs_2').style.zIndex = 392;
 map.getPane('pane_moderate_curbs_2').style['mix-blend-mode'] = 'normal';
 var layer_moderate_curbs_2 = new L.geoJson(json_moderate_curbs_2, {
   attribution: '',
@@ -717,7 +732,8 @@ L.control.layers(baseMaps,{
   '<img src="../images/CrosswalksInaccessible_3.png" style="display:inline;" /> Crosswalks Inaccessible': layer_CrosswalksInaccessible_3,
   'Buildings [% entrance acessible]<br /><img src="../images/Buildings_2_00.png" style="display:inline;margin-left:10px;" /> 0<br><img src="../images/Buildings_2_251.png" style="display:inline;margin-left:10px;" /> < 25 <br><img src="../images/Buildings_2_502.png" style="display:inline;margin-left:10px;" /> < 50<br><img src="../images/Buildings_2_753.png" style="display:inline;margin-left:10px;" /> < 75<br><img src="../images/Buildings_2_1004.png" style="display:inline;margin-left:10px;" /> < 100': layer_Buildings_2,
   'Parking Lots<br /><img src="../images/ParkingLots_1_Accessible0.png" style="display:inline;margin-left:10px;" /> Accessible<br><img src="../images/ParkingLots_1_Inaccessible1.png" style="display:inline;margin-left:10px;" /> Inaccessible': layer_ParkingLots_1,
-  "OpenStreetMap monochrome": layer_OpenStreetMapmonochrome_0,},{collapsed:false, id:"LayerControl"}).addTo(map);
+  "Terrain ": layer_Stamen,
+  "OpenStreetMap monochrome": layer_OpenStreetMapmonochrome_0},{collapsed:false, id:"LayerControl"}).addTo(map);
 map.fitBounds([[51.069150756757764,-114.14864845733861],[51.08612491756922,-114.11165913466205]]);
 //map.fitBounds([[50.82823823643107,-114.43890601034177],[51.2279077695121,-113.58878643821647]]);
 map.setMaxBounds(new L.latLngBounds([[50.82823823643107,-114.43890601034177],[51.2279077695121,-113.58878643821647]]))
@@ -733,9 +749,11 @@ var measureControl = new L.Control.Measure({
   primaryLengthUnit: 'meters',
   secondaryLengthUnit: 'kilometers',
   primaryAreaUnit: 'sqmeters',
-  secondaryAreaUnit: 'hectares'
+  secondaryAreaUnit: 'hectares',
+  activeColor: '#2c2c2c',
+  completedColor: '#000000',
 });
-//measureControl.addTo(map);
+measureControl.addTo(map);
 //document.getElementsByClassName('leaflet-control-measure-toggle')[0]
 //.innerHTML = '';
 //document.getElementsByClassName('leaflet-control-measure-toggle')[0]
@@ -850,6 +868,6 @@ abstract.onAdd = function (map) {
   abstract.show = function () {
       this._div.classList.remove("abstract");
       this._div.classList.add("abstractUncollapsed");
-      this._div.innerHTML = 'This map is based on data from Hayat, S. and Fast, V. (2018). Classifying and mapping accessible mobility on post-secondary campuses. In Proceedings of the 7th Conference on Spatial Knowledge and Information Canada (SKI2019), Banff, Alberta, 22-23 February 2019. style="display:inline;" />';
+      this._div.innerHTML = 'Based on classification scheme used by Hayat and Fast (2018): <br> <img src="../images/classification.png" style="display:inline;" />';
 };
 abstract.addTo(map);
