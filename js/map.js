@@ -868,6 +868,6 @@ abstract.onAdd = function (map) {
   abstract.show = function () {
       this._div.classList.remove("abstract");
       this._div.classList.add("abstractUncollapsed");
-      this._div.innerHTML = '<img src="/images/classification.PNG" />';
+      this._div.innerHTML = '<img src="/images/classification.PNG" width="2000px"/>';
 };
 abstract.addTo(map);
