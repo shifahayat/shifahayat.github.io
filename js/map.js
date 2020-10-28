@@ -21,7 +21,7 @@ function highlightFeature(e) {
 var map = L.map('map', {
   zoomControl:true, maxZoom:17, minZoom:9
 });
-map.attributionControl.setPrefix('<a href="" title="Classifying and Mapping Accessible Mobility on Post-Secondary Campuses">Hayat and Fast (2019)</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+map.attributionControl.setPrefix('<a href="http://contacts.ucalgary.ca/info/geog/files/info/unitis/publications/1-9668389/SKI-Canada-2019-7-5-3.pdf" title="Classifying and Mapping Accessible Mobility on Post-Secondary Campuses">Hayat and Fast (2019)</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
 var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
 // load a tile layer
 map.createPane('pane_OpenStreetMapmonochrome_0');
