@@ -1,6 +1,7 @@
 site: Portfolio
 
-url: https://shifahayat.github.io/
+url: https://shifahayat.github.io
+future: true
 baseurl:
 
 collections:

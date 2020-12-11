@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
+
 	<title>Alberta</title>
 
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
@@ -33,7 +33,7 @@
 <div id='map'></div>
 
 <script type="text/javascript" src="Alberta_age.js">
-	
+
 
 
 
@@ -84,9 +84,9 @@
 	};
 
 	info.update = function (props) {
-		this._div.innerHTML = '<h4>Alberta Census</h4>' +  (props ?
-			'<b>Total population: </b><br />' + props.TOTAL_8 + ' people<br/><b>Populatiuon > 65:</b><br />' + props.TOTAL_24 + ' people<br/><b>Populatiuon percentage > 65:</b><br />' + Math.round(props.TOTAL_24/props.TOTAL_8*100) + ' %'
-			: 'Hover over a county');
+		this._div.innerHTML = '<h4>Alberta Census 2016</h4>' +  (props ?
+			'<b>Total population: </b><br />' + props.TOTAL_8 + ' people<br/><b>Population > 65 yo:</b><br />' + props.TOTAL_24 + ' people<br/><b>Population percentage > 65 yo:</b><br />' + Math.round(props.TOTAL_24/props.TOTAL_8*100) + ' %'
+			: 'Hover over a census subdivision');
 
 	};
 
@@ -155,7 +155,7 @@
 		info.update(layer.feature.properties);
 	}
 
-	
+
 
 	function resetHighlight(e) {
 		//geojson.resetStyle(e.target);
@@ -176,7 +176,7 @@
 	}
 
 
-	
+
 
 	map.attributionControl.addAttribution('Census data &copy; Alberta Government</a>');
 
