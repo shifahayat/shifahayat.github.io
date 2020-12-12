@@ -21,7 +21,7 @@ function highlightFeature(e) {
 var map = L.map('map', {
   zoomControl:true, maxZoom:17, minZoom:9
 });
-map.attributionControl.setPrefix('<a href="https://riccardoklinger.de" target="_blank">r.klinger</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+map.attributionControl.setPrefix('<a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
 var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
 // load a tile layer
 map.createPane('pane_OpenStreetMapmonochrome_0');
@@ -71,7 +71,7 @@ function pop_ParkingLots_1(feature, layer) {
   var popupContent = "Parking " + (feature.properties['Lot_Name'] !== null ? autolinker.link(feature.properties['Lot_Name'].toLocaleString()) : '') + '<br>' +
   (feature.properties['ACCESS'] !== null ? autolinker.link(feature.properties['ACCESS'].toLocaleString()) : '') + '<br>' +
     (feature.properties['NUM_ACCESS'] !== null ? autolinker.link(feature.properties['NUM_ACCESS'].toLocaleString()) : '') + ' accessible stalls out of ' +
-    (feature.properties['NUM_TOTAL_'] !== null ? autolinker.link(feature.properties['NUM_TOTAL_'].toLocaleString()) : '') + ' stalls in total';    
+    (feature.properties['NUM_TOTAL_'] !== null ? autolinker.link(feature.properties['NUM_TOTAL_'].toLocaleString()) : '') + ' stalls in total';
     layer.bindPopup(popupContent, {maxHeight: 400});
 }
 
@@ -85,7 +85,7 @@ function style_ParkingLots_1_0(feature) {
       dashArray: '',
       lineCap: 'butt',
       lineJoin: 'miter',
-      weight: 4.0, 
+      weight: 4.0,
       fill: true,
       fillOpacity: 1,
       fillColor: 'rgba(186,186,186,1.0)',
@@ -100,7 +100,7 @@ function style_ParkingLots_1_0(feature) {
       dashArray: '',
       lineCap: 'butt',
       lineJoin: 'miter',
-      weight: 4.0, 
+      weight: 4.0,
       fill: true,
       fillOpacity: 1,
       fillColor: 'rgba(186,186,186,1.0)',
@@ -115,8 +115,8 @@ function style_ParkingLots_1_0(feature) {
       dashArray: '',
       lineCap: 'butt',
       lineJoin: 'miter',
-      weight: 1.0, 
-      fill: true,     
+      weight: 1.0,
+      fill: true,
       fillOpacity: 1,
       fillColor: 'rgba(201,134,62,1.0)',
       interactive: true,
@@ -172,7 +172,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0, 
+        weight: 1.0,
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(153,0,0,1.0)',
@@ -187,7 +187,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0, 
+        weight: 1.0,
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(249,255,65,1.0)',
@@ -202,7 +202,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0, 
+        weight: 1.0,
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(254,201,129,1.0)',
@@ -217,7 +217,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0, 
+        weight: 1.0,
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(196,230,135,1.0)',
@@ -232,7 +232,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0, 
+        weight: 1.0,
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(26,150,65,1.0)',
@@ -868,7 +868,6 @@ abstract.onAdd = function (map) {
   abstract.show = function () {
       this._div.classList.remove("abstract");
       this._div.classList.add("abstractUncollapsed");
-      this._div.innerHTML = 'PUT YOUR FANCY ABOUT HERE.... full HTML support ebven with local images like <img src="../images/CrosswalksFullyAccessible_5.png" style="display:inline;" />' +
-      'or even remote images like this one:<br><img src="https://pyxis.nymag.com/v1/imgs/ed2/fdf/6b2f9c9e653d59ae183cf201b96ebb63ea-4-justin-bieber-cornrows.rsquare.w330.jpg" width="50px">';
+      this._div.innerHTML = 'Based on data from Hayat and Fast (2019)';
 };
 abstract.addTo(map);
