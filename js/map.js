@@ -929,6 +929,6 @@ abstract.onAdd = function (map) {
   abstract.show = function () {
       this._div.classList.remove("abstract");
       this._div.classList.add("abstractUncollapsed");
-      this._div.innerHTML = 'Based on data from Hayat and Fast (2019)';
+      this._div.innerHTML = 'Based on Hayat and Fast (2019)';
 };
 abstract.addTo(map);
