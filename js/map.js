@@ -21,8 +21,13 @@ function highlightFeature(e) {
 var map = L.map('map', {
   zoomControl:true, maxZoom:17, minZoom:9
 });
-map.attributionControl.setPrefix('<a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+map.attributionControl.setPrefix('<a href="https://riccardoklinger.de" target="_blank">r.klinger</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
 var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+// interactve layer control:
+var baseMaps = {};
+var overLays = {};
+var layerControl = new L.control.layers(baseMaps, overLays).addTo(map);
+
 // load a tile layer
 map.createPane('pane_OpenStreetMapmonochrome_0');
 map.getPane('pane_OpenStreetMapmonochrome_0').style.zIndex = 380;
@@ -52,28 +57,7 @@ layer_Stamen;
 map.addLayer(layer_Stamen);
 var bounds_group = new L.featureGroup([]);
 //adding parkingLots
-function pop_ParkingLots_1(feature, layer) {
-  layer.on({
-      mouseout: function(e) {
-          for (i in e.target._eventParents) {
-              e.target._eventParents[i].resetStyle(e.target);
-          }
-          if (typeof layer.closePopup == 'function') {
-              layer.closePopup();
-          } else {
-              layer.eachLayer(function(feature){
-                  feature.closePopup()
-              });
-          }
-      },
-      mouseover: highlightFeature,
-  });
-  var popupContent = "Parking " + (feature.properties['Lot_Name'] !== null ? autolinker.link(feature.properties['Lot_Name'].toLocaleString()) : '') + '<br>' +
-  (feature.properties['ACCESS'] !== null ? autolinker.link(feature.properties['ACCESS'].toLocaleString()) : '') + '<br>' +
-    (feature.properties['NUM_ACCESS'] !== null ? autolinker.link(feature.properties['NUM_ACCESS'].toLocaleString()) : '') + ' accessible stalls out of ' +
-    (feature.properties['NUM_TOTAL_'] !== null ? autolinker.link(feature.properties['NUM_TOTAL_'].toLocaleString()) : '') + ' stalls in total';
-    layer.bindPopup(popupContent, {maxHeight: 400});
-}
+
 
 function style_ParkingLots_1_0(feature) {
   switch(String(feature.properties['ACCESS'])) {
@@ -85,7 +69,7 @@ function style_ParkingLots_1_0(feature) {
       dashArray: '',
       lineCap: 'butt',
       lineJoin: 'miter',
-      weight: 4.0,
+      weight: 4.0, 
       fill: true,
       fillOpacity: 1,
       fillColor: 'rgba(186,186,186,1.0)',
@@ -100,7 +84,7 @@ function style_ParkingLots_1_0(feature) {
       dashArray: '',
       lineCap: 'butt',
       lineJoin: 'miter',
-      weight: 4.0,
+      weight: 4.0, 
       fill: true,
       fillOpacity: 1,
       fillColor: 'rgba(186,186,186,1.0)',
@@ -115,8 +99,8 @@ function style_ParkingLots_1_0(feature) {
       dashArray: '',
       lineCap: 'butt',
       lineJoin: 'miter',
-      weight: 1.0,
-      fill: true,
+      weight: 1.0, 
+      fill: true,     
       fillOpacity: 1,
       fillColor: 'rgba(201,134,62,1.0)',
       interactive: true,
@@ -127,7 +111,7 @@ function style_ParkingLots_1_0(feature) {
 map.createPane('pane_ParkingLots_1');
 map.getPane('pane_ParkingLots_1').style.zIndex = 395;
 map.getPane('pane_ParkingLots_1').style['mix-blend-mode'] = 'normal';
-var layer_ParkingLots_1 = new L.geoJson(json_ParkingLots_1, {
+/*var layer_ParkingLots_1 = new L.geoJson(json_ParkingLots_1, {
   attribution: '',
   interactive: true,
   dataVar: 'json_ParkingLots_1',
@@ -137,8 +121,49 @@ var layer_ParkingLots_1 = new L.geoJson(json_ParkingLots_1, {
   style: style_ParkingLots_1_0,
 });
 bounds_group.addLayer(layer_ParkingLots_1);
-map.addLayer(layer_ParkingLots_1);
-
+map.addLayer(layer_ParkingLots_1);*/
+var layer_ParkingLots_1;
+let xhr = new XMLHttpRequest();
+xhr.open('GET', '../data/ParkingLots_1.geojson');
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.responseType = 'json';
+xhr.onload = function() {
+    if (xhr.status !== 200) return
+    function pop_ParkingLots_1(feature, layer) {
+      layer.on({
+          mouseout: function(e) {
+              for (i in e.target._eventParents) {
+                  e.target._eventParents[i].resetStyle(e.target);
+              }
+              if (typeof layer.closePopup == 'function') {
+                  layer.closePopup();
+              } else {
+                  layer.eachLayer(function(feature){
+                      feature.closePopup()
+                  });
+              }
+          },
+          mouseover: highlightFeature,
+      });
+      var popupContent = "Parking " + (feature.properties['Lot_Name'] !== null ? autolinker.link(feature.properties['Lot_Name'].toLocaleString()) : '') + '<br>' +
+      (feature.properties['ACCESS'] !== null ? autolinker.link(feature.properties['ACCESS'].toLocaleString()) : '') + '<br>' +
+        (feature.properties['NUM_ACCESS'] !== null ? autolinker.link(feature.properties['NUM_ACCESS'].toLocaleString()) : '') + ' accessible stalls out of ' +
+        (feature.properties['NUM_TOTAL_'] !== null ? autolinker.link(feature.properties['NUM_TOTAL_'].toLocaleString()) : '') + ' stalls in total';    
+        layer.bindPopup(popupContent, {maxHeight: 400});
+    }
+    layer_ParkingLots_1 = L.geoJSON(xhr.response,{
+      attribution: '',
+    interactive: true,
+  dataVar: 'json_ParkingLots_1',
+  layerName: 'layer_ParkingLots_1',
+  pane: 'pane_ParkingLots_1',
+  onEachFeature: pop_ParkingLots_1,
+  style: style_ParkingLots_1_0,}).addTo(map);
+    bounds_group.addLayer(layer_ParkingLots_1);
+    //map.addLayer(layer_ParkingLots_1);
+      layerControl.addOverlay(layer_ParkingLots_1,'Parking Lots<br /><img src="../images/ParkingLots_1_Accessible0.png" style="display:inline;margin-left:10px;" /> Accessible<br><img src="../images/ParkingLots_1_Inaccessible1.png" style="display:inline;margin-left:10px;" /> Inaccessible');
+    };
+xhr.send();
 // adding buildings
   function pop_Buildings_2(feature, layer) {
     layer.on({
@@ -172,7 +197,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0,
+        weight: 1.0, 
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(153,0,0,1.0)',
@@ -187,7 +212,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0,
+        weight: 1.0, 
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(249,255,65,1.0)',
@@ -202,7 +227,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0,
+        weight: 1.0, 
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(254,201,129,1.0)',
@@ -217,7 +242,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0,
+        weight: 1.0, 
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(196,230,135,1.0)',
@@ -232,7 +257,7 @@ function style_Buildings_2_0(feature) {
         dashArray: '',
         lineCap: 'butt',
         lineJoin: 'miter',
-        weight: 1.0,
+        weight: 1.0, 
         fill: true,
         fillOpacity: 1,
         fillColor: 'rgba(26,150,65,1.0)',
@@ -243,7 +268,8 @@ function style_Buildings_2_0(feature) {
 map.createPane('pane_Buildings_2');
 map.getPane('pane_Buildings_2').style.zIndex = 394;
 map.getPane('pane_Buildings_2').style['mix-blend-mode'] = 'normal';
-var layer_Buildings_2 = new L.geoJson(json_Buildings_2, {
+var layer_Buildings_2;
+/*var layer_Buildings_2 = new L.geoJson(json_Buildings_2, {
     attribution: '',
     interactive: true,
     dataVar: 'json_Buildings_2',
@@ -251,10 +277,52 @@ var layer_Buildings_2 = new L.geoJson(json_Buildings_2, {
     pane: 'pane_Buildings_2',
     onEachFeature: pop_Buildings_2,
     style: style_Buildings_2_0,
-});
+});*/
+let xhr2 = new XMLHttpRequest();
+xhr2.open('GET', '../data/Buildings_2.geojson');
+xhr2.setRequestHeader('Content-Type', 'application/json');
+xhr2.responseType = 'json';
+xhr2.onload = function() {
+    if (xhr.status !== 200) return
+    layer_Buildings_2 = L.geoJSON(xhr2.response,{
+      attribution: '',
+      interactive: true,
+      dataVar: 'json_Buildings_2',
+      layerName: 'layer_Buildings_2',
+      pane: 'pane_Buildings_2',
+      onEachFeature: pop_Buildings_2,
+      style: style_Buildings_2_0}).addTo(map);
+    bounds_group.addLayer(layer_Buildings_2);
+    //map.addLayer(layer_Buildings_2);
+    var i = 0;
+    layer_Buildings_2.eachLayer(function(layer) {
+      var context = {
+          feature: layer.feature,
+          variables: {}
+      };
+      layer.bindTooltip((layer.feature.properties['Abbrev'] !== null?String('<div>' +   layer.feature.properties['Abbrev']) + '</div>':''), {permanent: true, className: 'css_Buildings_2'});
+      labels.push(layer);
+      totalMarkers += 1;
+        layer.added = true;
+        addLabel(layer, i);
+        i++;
+      });
+      resetLabels([layer_Buildings_2]);
+      map.on("zoomend", function(){
+          resetLabels([layer_Buildings_2]);
+      });
+      map.on("layeradd", function(){
+          resetLabels([layer_Buildings_2]);
+      });
+      map.on("layerremove", function(){
+          resetLabels([layer_Buildings_2]);
+      });
+      //'Buildings [% entrance acessible]<br /><img src="../images/Buildings_2_00.png" style="display:inline;margin-left:10px;" /> 0<br><img src="../images/Buildings_2_251.png" style="display:inline;margin-left:10px;" /> < 25 <br><img src="../images/Buildings_2_502.png" style="display:inline;margin-left:10px;" /> < 50<br><img src="../images/Buildings_2_753.png" style="display:inline;margin-left:10px;" /> < 75<br><img src="../images/Buildings_2_1004.png" style="display:inline;margin-left:10px;" /> < 100': layer_Buildings_2,
+      layerControl.addOverlay(layer_Buildings_2, 'Buildings [% entrance acessible]<br /><img src="../images/Buildings_2_00.png" style="display:inline;margin-left:10px;" /> 0<br><img src="../images/Buildings_2_251.png" style="display:inline;margin-left:10px;" /> < 25 <br><img src="../images/Buildings_2_502.png" style="display:inline;margin-left:10px;" /> < 50<br><img src="../images/Buildings_2_753.png" style="display:inline;margin-left:10px;" /> < 75<br><img src="../images/Buildings_2_1004.png" style="display:inline;margin-left:10px;" /> < 100');
+};
+xhr2.send();
 
-bounds_group.addLayer(layer_Buildings_2);
-map.addLayer(layer_Buildings_2);
+
 
 //adding croswalks_inacc
 function pop_CrosswalksInaccessible_3(feature, layer) {
@@ -304,7 +372,7 @@ var layer_CrosswalksInaccessible_3 = new L.geoJson(json_CrosswalksInaccessible_3
 });
 bounds_group.addLayer(layer_CrosswalksInaccessible_3);
 map.addLayer(layer_CrosswalksInaccessible_3);
-
+layerControl.addOverlay(layer_CrosswalksInaccessible_3,'<img src="../images/CrosswalksInaccessible_3.png" style="display:inline;" /> Crosswalks Inaccessible');
 //adding crosswalksMidAcc
 function pop_CrosswalksModAccessible_4(feature, layer) {
   layer.on({
@@ -353,6 +421,7 @@ var layer_CrosswalksModAccessible_4 = new L.geoJson(json_CrosswalksModAccessible
 });
 bounds_group.addLayer(layer_CrosswalksModAccessible_4);
 map.addLayer(layer_CrosswalksModAccessible_4);
+layerControl.addOverlay(layer_CrosswalksModAccessible_4, '<img src="../images/CrosswalksModAccessible_4.png" style="display:inline;" /> Crosswalks Mod Accessible');
 function pop_CrosswalksFullyAccessible_5(feature, layer) {
   layer.on({
       mouseout: function(e) {
@@ -400,6 +469,7 @@ var layer_CrosswalksFullyAccessible_5 = new L.geoJson(json_CrosswalksFullyAccess
 });
 bounds_group.addLayer(layer_CrosswalksFullyAccessible_5);
 map.addLayer(layer_CrosswalksFullyAccessible_5);
+layerControl.addOverlay(layer_CrosswalksFullyAccessible_5,'<img src="../images/CrosswalksFullyAccessible_5.png" style="display:inline;" /> Crosswalks Fully Accessible');
 function pop_SidewalksInaccessible_6(feature, layer) {
   layer.on({
       mouseout: function(e) {
@@ -448,6 +518,7 @@ var layer_SidewalksInaccessible_6 = new L.geoJson(json_SidewalksInaccessible_6, 
 });
 bounds_group.addLayer(layer_SidewalksInaccessible_6);
 map.addLayer(layer_SidewalksInaccessible_6);
+layerControl.addOverlay(layer_SidewalksInaccessible_6,'<img src="../images/SidewalksInaccessible_6.png" style="display:inline;" /> Sidewalks Inaccessible');
 function pop_SidewalksModAccessible_7(feature, layer) {
   layer.on({
       mouseout: function(e) {
@@ -497,6 +568,7 @@ var layer_SidewalksModAccessible_7 = new L.geoJson(json_SidewalksModAccessible_7
 });
 bounds_group.addLayer(layer_SidewalksModAccessible_7);
 map.addLayer(layer_SidewalksModAccessible_7);
+layerControl.addOverlay(layer_SidewalksModAccessible_7,'<img src="../images/SidewalksModAccessible_7.png" style="display:inline;" /> Sidewalks Mod Accessible');
 function pop_SidewalksFullyAccessible_8(feature, layer) {
   layer.on({
       mouseout: function(e) {
@@ -545,6 +617,7 @@ var layer_SidewalksFullyAccessible_8 = new L.geoJson(json_SidewalksFullyAccessib
 });
 bounds_group.addLayer(layer_SidewalksFullyAccessible_8);
 map.addLayer(layer_SidewalksFullyAccessible_8);
+layerControl.addOverlay(layer_SidewalksFullyAccessible_8,'<img src="../images/SidewalksFullyAccessible_8.png" style="display:inline;" /> Sidewalks Fully Accessible');
 //curbs
 function pop_inaccessible_curbs_0(feature, layer) {
   layer.on({
@@ -603,6 +676,7 @@ var layer_inaccessible_curbs_0 = new L.geoJson(json_inaccessible_curbs_0, {
 });
 bounds_group.addLayer(layer_inaccessible_curbs_0);
 //map.addLayer(layer_inaccessible_curbs_0);
+layerControl.addOverlay(layer_inaccessible_curbs_0, '<img src="../images/inaccessible_curbs_0.png" style="display:inline;" /> Curbs Inaccessible ');
 function pop_accessible_curbs_1(feature, layer) {
   layer.on({
     mouseout: function(e) {
@@ -660,6 +734,8 @@ var layer_accessible_curbs_1 = new L.geoJson(json_accessible_curbs_1, {
 });
 bounds_group.addLayer(layer_accessible_curbs_1);
 //map.addLayer(layer_accessible_curbs_1);
+layerControl.addOverlay(layer_accessible_curbs_1,'<img src="../images/accessible_curbs_1.png" style="display:inline;" /> Curbs Accessible ');
+
 function pop_moderate_curbs_2(feature, layer) {
   layer.on({
     mouseout: function(e) {
@@ -716,24 +792,31 @@ var layer_moderate_curbs_2 = new L.geoJson(json_moderate_curbs_2, {
   },
 });
 bounds_group.addLayer(layer_moderate_curbs_2);
+layerControl.addOverlay(layer_moderate_curbs_2, '<img src="../images/moderate_curbs_2.png" style="display:inline;" /> Curbs Moderately Accessible ');
 //map.addLayer(layer_moderate_curbs_2);
 
 
 var baseMaps = {};
-L.control.layers(baseMaps,{
-  '<img src="../images/accessible_curbs_1.png" style="display:inline;" /> Curbs Accessible ': layer_accessible_curbs_1,
-  '<img src="../images/moderate_curbs_2.png" style="display:inline;" /> Curbs Moderately Accessible ': layer_moderate_curbs_2,
-  '<img src="../images/inaccessible_curbs_0.png" style="display:inline;" /> Curbs Inaccessible ': layer_inaccessible_curbs_0,
-  '<img src="../images/SidewalksFullyAccessible_8.png" style="display:inline;" /> Sidewalks Fully Accessible': layer_SidewalksFullyAccessible_8,
-  '<img src="../images/SidewalksModAccessible_7.png" style="display:inline;" /> Sidewalks Mod Accessible': layer_SidewalksModAccessible_7,
-  '<img src="../images/SidewalksInaccessible_6.png" style="display:inline;" /> Sidewalks Inaccessible': layer_SidewalksInaccessible_6,
-  '<img src="../images/CrosswalksFullyAccessible_5.png" style="display:inline;" /> Crosswalks Fully Accessible': layer_CrosswalksFullyAccessible_5,
-  '<img src="../images/CrosswalksModAccessible_4.png" style="display:inline;" /> Crosswalks Mod Accessible': layer_CrosswalksModAccessible_4,
-  '<img src="../images/CrosswalksInaccessible_3.png" style="display:inline;" /> Crosswalks Inaccessible': layer_CrosswalksInaccessible_3,
-  'Buildings [% entrance acessible]<br /><img src="../images/Buildings_2_00.png" style="display:inline;margin-left:10px;" /> 0<br><img src="../images/Buildings_2_251.png" style="display:inline;margin-left:10px;" /> < 25 <br><img src="../images/Buildings_2_502.png" style="display:inline;margin-left:10px;" /> < 50<br><img src="../images/Buildings_2_753.png" style="display:inline;margin-left:10px;" /> < 75<br><img src="../images/Buildings_2_1004.png" style="display:inline;margin-left:10px;" /> < 100': layer_Buildings_2,
-  'Parking Lots<br /><img src="../images/ParkingLots_1_Accessible0.png" style="display:inline;margin-left:10px;" /> Accessible<br><img src="../images/ParkingLots_1_Inaccessible1.png" style="display:inline;margin-left:10px;" /> Inaccessible': layer_ParkingLots_1,
-  "Terrain ": layer_Stamen,
-  "OpenStreetMap monochrome": layer_OpenStreetMapmonochrome_0},{collapsed:false, id:"LayerControl"}).addTo(map);
+
+  // wait until DOM has loaded before running code
+//$(document).ready(function() {
+
+  // this code is only run once the DOM has loaded
+  /*L.control.layers(baseMaps,{
+    '<img src="../images/accessible_curbs_1.png" style="display:inline;" /> Curbs Accessible ': layer_accessible_curbs_1,
+    '<img src="../images/moderate_curbs_2.png" style="display:inline;" /> Curbs Moderately Accessible ': layer_moderate_curbs_2,
+    '<img src="../images/inaccessible_curbs_0.png" style="display:inline;" /> Curbs Inaccessible ': layer_inaccessible_curbs_0,
+    '<img src="../images/SidewalksFullyAccessible_8.png" style="display:inline;" /> Sidewalks Fully Accessible': layer_SidewalksFullyAccessible_8,
+    '<img src="../images/SidewalksModAccessible_7.png" style="display:inline;" /> Sidewalks Mod Accessible': layer_SidewalksModAccessible_7,
+    '<img src="../images/SidewalksInaccessible_6.png" style="display:inline;" /> Sidewalks Inaccessible': layer_SidewalksInaccessible_6,
+    '<img src="../images/CrosswalksFullyAccessible_5.png" style="display:inline;" /> Crosswalks Fully Accessible': layer_CrosswalksFullyAccessible_5,
+    '<img src="../images/CrosswalksModAccessible_4.png" style="display:inline;" /> Crosswalks Mod Accessible': layer_CrosswalksModAccessible_4,
+    '<img src="../images/CrosswalksInaccessible_3.png" style="display:inline;" /> Crosswalks Inaccessible': layer_CrosswalksInaccessible_3,
+    //'Buildings [% entrance acessible]<br /><img src="../images/Buildings_2_00.png" style="display:inline;margin-left:10px;" /> 0<br><img src="../images/Buildings_2_251.png" style="display:inline;margin-left:10px;" /> < 25 <br><img src="../images/Buildings_2_502.png" style="display:inline;margin-left:10px;" /> < 50<br><img src="../images/Buildings_2_753.png" style="display:inline;margin-left:10px;" /> < 75<br><img src="../images/Buildings_2_1004.png" style="display:inline;margin-left:10px;" /> < 100': layer_Buildings_2,
+    'Parking Lots<br /><img src="../images/ParkingLots_1_Accessible0.png" style="display:inline;margin-left:10px;" /> Accessible<br><img src="../images/ParkingLots_1_Inaccessible1.png" style="display:inline;margin-left:10px;" /> Inaccessible': layer_ParkingLots_1,
+    "Terrain ": layer_Stamen,
+    "OpenStreetMap monochrome": layer_OpenStreetMapmonochrome_0},{collapsed:false, id:"LayerControl"}).addTo(map);*/
+//});
 map.fitBounds([[51.069150756757764,-114.14864845733861],[51.08612491756922,-114.11165913466205]]);
 //map.fitBounds([[50.82823823643107,-114.43890601034177],[51.2279077695121,-113.58878643821647]]);
 map.setMaxBounds(new L.latLngBounds([[50.82823823643107,-114.43890601034177],[51.2279077695121,-113.58878643821647]]))
@@ -824,29 +907,7 @@ if (layer.getTooltip()) {
     }
 }
 }
-var i = 0;
-layer_Buildings_2.eachLayer(function(layer) {
-    var context = {
-        feature: layer.feature,
-        variables: {}
-    };
-    layer.bindTooltip((layer.feature.properties['Abbrev'] !== null?String('<div>' +   layer.feature.properties['Abbrev']) + '</div>':''), {permanent: true, className: 'css_Buildings_2'});
-    labels.push(layer);
-    totalMarkers += 1;
-      layer.added = true;
-      addLabel(layer, i);
-      i++;
-});
-resetLabels([layer_Buildings_2]);
-map.on("zoomend", function(){
-    resetLabels([layer_Buildings_2]);
-});
-map.on("layeradd", function(){
-    resetLabels([layer_Buildings_2]);
-});
-map.on("layerremove", function(){
-    resetLabels([layer_Buildings_2]);
-});
+
 
 
 //notes/abstract/about info
@@ -868,6 +929,7 @@ abstract.onAdd = function (map) {
   abstract.show = function () {
       this._div.classList.remove("abstract");
       this._div.classList.add("abstractUncollapsed");
-      this._div.innerHTML = '<img src="/images/classification.PNG" width="2000px"/>';
+      this._div.innerHTML = 'PUT YOUR FANCY ABOUT HERE.... full HTML support ebven with local images like <img src="../images/CrosswalksFullyAccessible_5.png" style="display:inline;" />' +
+      'or even remote images like this one:<br><img src="https://pyxis.nymag.com/v1/imgs/ed2/fdf/6b2f9c9e653d59ae183cf201b96ebb63ea-4-justin-bieber-cornrows.rsquare.w330.jpg" width="50px">';
 };
 abstract.addTo(map);
