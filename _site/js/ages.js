@@ -40,8 +40,8 @@
 
 	info.update = function (props) {
 		this._div.innerHTML = '<h4>Alberta Census</h4>' +  (props ?
-			'<b>Total population: </b><br />' + props.TOTAL_8 + ' people<br/><b>Population > 65:</b><br />' + props.TOTAL_24 + ' people<br/><b>Population percentage > 65:</b><br />' + Math.round(props.TOTAL_24/props.TOTAL_8*100) + ' %'
-			: 'Hover over a census subdivision');
+			'<b>Total population: </b><br />' + props.TOTAL_8 + ' people<br/><b>Populatiuon > 65:</b><br />' + props.TOTAL_24 + ' people<br/><b>Populatiuon percentage > 65:</b><br />' + Math.round(props.TOTAL_24/props.TOTAL_8*100) + ' %'
+			: 'Hover over a county');
 
 	};
 
@@ -110,7 +110,7 @@
 		info.update(layer.feature.properties);
 	}
 
-
+	
 
 	function resetHighlight(e) {
 		//geojson.resetStyle(e.target);
@@ -131,7 +131,7 @@
 	}
 
 
-
+	
 
 	map2.attributionControl.addAttribution('Census data &copy; Alberta Government</a>');
 
