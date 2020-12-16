@@ -1,18 +1,16 @@
 ---
 title: About me
-subtitle: MSc Geography student and geographic information scientist
+subtitle: Geography student and scientist
 description:
 featured_image: /images/demo/about.jpg
 ---
 
 ## Research Interests
-* coming soon
+* [to be added]
 
 ## Relevant Coursework:
 * MSc Geography at the University of Calgary
   * [GEOG 586: Web Mapping and Internet GIS](https://geog.ucalgary.ca/manageprofile/courses/f20/GEOG586?destination=courses)
-
-
 
 * BSc Geography (Honours) at the University of Calgary
   * [GEOG 567: Intro to Programming in GIS](https://geog.ucalgary.ca/manageprofile/courses/f18/GEOG567?destination=courses%2Ff18)
@@ -35,4 +33,4 @@ featured_image: /images/demo/about.jpg
 
 
 ## Community Involvement
-* coming soon
+* [to be added]
